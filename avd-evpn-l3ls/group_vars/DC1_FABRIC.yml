@@ -1,0 +1,189 @@
+---
+  ## Note: Default values are commented
+  
+  #======Fabric Variables======#
+  
+  # Fabric Name, required to match group_var file name | Required.
+  fabric_name: DC1_FABRIC
+  
+  # Underlay routing protocol | Required.
+  # underlay_routing_protocol: BGP
+  
+  # Point to Point Links MTU | Required.
+  #p2p_uplinks_mtu: 9000
+  
+  # IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
+  # Assigned as /31 for each uplink interfaces
+  # Assign network summary larger then:
+  # [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
+  underlay_p2p_network_summary: 172.31.255.0/24
+  
+  # IP address summary for BGP evpn overlay peering loopback for L3 leafs and spines | Required
+  # Assigned as /32 to Loopback0
+  # Assign range larger then:
+  # [ total spines + total potential L3 leafs ]
+  overlay_loopback_network_summary: 192.168.255.0/24
+  
+  # IP address summary VTEP VXLAN Tunnel source loopback1 IP for L3 leafs | Required
+  # Assigned as /32 to Loopback1
+  # Assign range larger then total L3 leafs
+  vtep_loopback_network_summary: 192.168.254.0/24
+  
+  # IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | *Required
+  # * When MLAG leafs present in topology.
+  # Assign range larger then total: L3 Leafs + 2 ]
+  mlag_ips:
+    leaf_peer_l3: 10.255.251.0/24
+    mlag_peer: 10.255.252.0/24
+  
+  # BGP peer groups encrypted password
+  # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
+  # EVPN_OVERLAY_PEERS | Required
+  # Leverage an Arista EOS switch to generate the encrypted password
+  bgp_peer_groups:
+    IPv4_UNDERLAY_PEERS:
+      password: "AQQvKeimxJu+uGQ/yYvv9w=="
+    EVPN_OVERLAY_PEERS:
+        password: "q+VNViP5i4rVjW1cxFv2wA=="
+    MLAG_IPv4_UNDERLAY_PEER:
+        password: "vnEaG8gMeQf3d3cN6PktXQ=="
+  
+  # Enable vlan aware bundles
+  #vxlan_vlan_aware_bundles: false
+  
+  # Leaf BGP Tuning | Optional.
+  leaf_bgp_defaults:
+    - graceful-restart restart-time 300
+    - graceful-restart
+  
+  # Spine BGP Tuning | Optional.
+  spine_bgp_defaults:
+    - graceful-restart restart-time 300
+    - graceful-restart
+  
+  # BFD Multihop tunning | Required.
+  #bfd_multihop:
+  #  interval: 300
+  #  min_rx: 300
+  #  multiplier: 3
+  
+  #======Spine Variables======#
+  
+  spine:
+    # Arista platform family | Required.
+    platform: vEOS-LAB
+    # Spine BGP AS | Required.
+    bgp_as: 65001
+    # Accepted L3 leaf bgp as range | Required.
+    leaf_as_range: 65101-65132
+    # Specify dictionary of Spine nodes | Required.
+    nodes:
+      DC1-SPINE1:
+        id: 1
+        mgmt_ip: 192.168.2.101/24
+      DC1-SPINE2:
+        id: 2
+        mgmt_ip: 192.168.2.102/24
+      DC1-SPINE3:
+        id: 3
+        mgmt_ip: 192.168.2.103/24
+      DC1-SPINE4:
+        id: 4
+        mgmt_ip: 192.168.2.104/24
+  
+  #======L3Leaf Variables======#
+  l3leaf:
+    defaults:
+      platform: vEOS-LAB
+      bgp_as: 65100
+      spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
+      uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 4096
+      virtual_router_mac_address : 00:dc:00:00:00:0a
+    node_groups:
+      DC1_LEAF1:
+        bgp_as: 65101
+        #filter:
+        #  tenants: [ all ]
+        #  tags: [ all ]
+        nodes:
+          DC1-LEAF1A:
+            id: 1
+            mgmt_ip: 192.168.200.105/24
+            spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
+      DC1_LEAF2:
+        bgp_as: 65102
+        #filter:
+        #  tenants: [ all ]
+        #  tags: [ all ]
+        nodes:
+          DC1-LEAF2A:
+            id: 2
+            mgmt_ip: 192.168.200.106/24
+            spine_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
+          DC1-LEAF2B:
+            id: 3
+            mgmt_ip: 192.168.200.107/24
+            spine_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
+      DC1_SVC3:
+        bgp_as: 65103
+        #filter:
+        #  tenants: [ all ]
+        #  tags: [ all ]
+        nodes:
+          DC1-SVC3A:
+            id: 4
+            mgmt_ip: 192.168.200.108/24
+            spine_interfaces: [ Ethernet4, Ethernet4, Ethernet4, Ethernet4 ]
+          DC1-SVC3B:
+            id: 5
+            mgmt_ip: 192.168.200.109/24
+            spine_interfaces: [ Ethernet5, Ethernet5, Ethernet5, Ethernet5 ]
+      DC1_BL1:
+        bgp_as: 65104
+        #filter:
+        #  tenants: [ all ]
+        #  tags: [ all ]
+        nodes:
+          DC1-BL1A:
+            id: 6
+            mgmt_ip: 192.168.200.110/24
+            spine_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
+          DC1-BL1B:
+            id: 7
+            mgmt_ip: 192.168.200.111/24
+            spine_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
+  
+  #======L2Leaf Variables======#
+  l2leaf:
+    defaults:
+      platform: vEOS-LAB
+      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+      uplink_interfaces: [ Ethernet1, Ethernet2 ]
+      mlag_interfaces: [ Ethernet3, Ethernet4 ]
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 16384
+    node_groups:
+      DC1_L2LEAF1:
+        parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]
+        #filter:
+        #  tenants: [ all ]
+        #  tags: [ all ]
+        nodes:
+          DC1-L2LEAF1A:
+            id: 8
+            mgmt_ip: 192.168.200.112/24
+            l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
+      DC1_L2LEAF2:
+        nodes:
+          DC1-L2LEAF2A:
+            id: 9
+            mgmt_ip: 192.168.200.113/24
+            l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
+          DC1-L2LEAF2B:
+            id: 10
+            mgmt_ip: 192.168.200.114/24
+            l3leaf_interfaces: [ Ethernet8, Ethernet8 ]
+  

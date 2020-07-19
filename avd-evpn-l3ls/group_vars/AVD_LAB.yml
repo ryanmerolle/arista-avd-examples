@@ -1,0 +1,42 @@
+---
+## Note: Default values are commented
+
+#======Common Variables======#
+
+# Clock timezone | Optional
+timezone: America/New_York
+
+# Dictionary of local users | Required
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1"
+
+# Management eAPI | Required
+# Default is https management eAPI enabled
+#management_eapi:
+#  enable_http: false
+#  enable_https: true
+
+# Management interface configuration | Required
+#mgmt_vrf_routing: false 
+#mgmt_interface: Management1
+#mgmt_interface_vrf: MGMT 
+mgmt_gateway: 192.168.200.1
+
+# list of DNS servers | Optional
+name_servers:
+ - 8.8.8.8
+
+# List of NTP Servers IP or DNS name | Optional
+# The first NTP server in the list will be preferred
+# NTP request will be sourced from < management_interface_vrf >
+ntp_servers:
+  - 0.north-america.pool.ntp.org
+  - 1.north-america.pool.ntp.org
+
+# MAC address-table aging time | Optional
+# Use to change the EOS default of 300
+mac_address_table:
+  aging_time: 1500
