@@ -13,7 +13,8 @@ EVPN vs VxLAN with manual flooding:
  - For my personal needs.  EVPN does not necessarily need to be deployed with VxLAN.
  - If no VxLAN stretches beyond 2 sites in a region & default/MGMT vrfs are maintained in the L3 Leaf & Spine infra, it just adds unneeded complexity if you have no need for managing segregation of tenant routing tables.
  - Manual VxLAN/VTEP Flooding works with automation assuming your VxLAN config base config and logic is solid.
- - Leaf & Spine Role would be useful to separate from the consolidate role L3 Leaf & Spine EVPN role.
+ - It would be useful for Arista to seperate the Leaf & Spine role from the consolidated L3 Leaf & Spine EVPN role.  That way roles could build upon each other and users could select building blocks to their designs.
+ - Currently, if I wanted to leverage the hardwork done by Arista right now with VxLAN and L3 Spine & Leaf without EVPN, I would need to fork the current role to do so in order.  IE I would have to take on the additional overhead of adapting and merging future offical releases into my own fork.
 
 Inventory:
  - I understand YAML, but the use of inventory.yaml tripped me up.
