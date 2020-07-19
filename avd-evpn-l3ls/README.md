@@ -21,7 +21,7 @@ Inventory:
  - Its not much different than outputs from inventory plugins or json, but I am just so used to hello world / intro type examples to leverage a ini file for host inventory.
 
 Structure & Role Generated Files:
- - Documentation output is a nice touch that [carlbuchmann](https://github.com/carlbuchmann) started before he joined Arista.  I have looked to do the same in my own approach.
+ - Documentation output is a nice touch that [carlbuchmann](https://github.com/carlbuchmann) started before he joined Arista.  Since I first saw his early Ansible example repos, I have also focused to do the same in my own approach.
  - Structured config files make total sense, & they feel like they should belong as host_vars for each device.
  - I assume the reason structured config files are not maintained in the host_vars folders is probably so you can alter your host_vars as needed to track the generation of new structured config. 
  - Another approach to keep the above intention of separating abstraction/topology/function generated intended config from the host & group vars it used to generate intended configs would be to separate & move the "generate device intended config and documentation" task of the play and its associated directory structure to a separate directory/repo and its own playbook.  Basically you could drop avd-evpn-l3ls generated structured configs into the host_vars of the "device_config-deploy" repo's host_vars and also update/overwrite a `hosts/<fabric-name>.yml` for any fabric abstractions that were generated. (I likely need to articulate this better, and this is not supported given the expected directory structure in the eos_config_deploy_eapi role).
