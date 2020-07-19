@@ -17,7 +17,7 @@ EVPN vs VxLAN with manual flooding:
  - Currently, if I wanted to leverage the hardwork done by Arista right now with VxLAN and L3 Spine & Leaf without EVPN, I would need to fork the current role to do so in order.  IE I would have to take on the additional overhead of adapting and merging future offical releases into my own fork.
 
 Inventory:
- - I understand YAML, but the use of inventory.yaml tripped me up.
+ - I understand and extensively develop many complicated YAML & JSON files for use with Ansible and Python, but the use of inventory.yaml tripped me up.
  - Its not much different than outputs from inventory plugins or json, but I am just so used to hello world / intro type examples to leverage a ini file for host inventory.
 
 Structure & Role Generated Files:
