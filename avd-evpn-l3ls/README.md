@@ -7,7 +7,7 @@ A more simplified & commented version of [arista-evpn-webinar-june-11](https://g
 
 Overall Thoughts:
  - I like the approach and especially the `eos_config_deploy_eapi` role.  It should have full EOS syntax coverage for all recent OS 4.22+ & it is supported as P3/4 by Arista.
- - @aristanetworks @arista-netdevops-community have done a great job, but really need to work on organization of repos, removing items that prevent getting started quickly (vault partially setup, multiple copies of the same examples with subtle differences that make a huge difference to getting started, knowing which version of their example is the latest)
+ - [aristanetworks](https://github.com/aristanetworks) & [arista-netdevops-community](https://github.com/arista-netdevops-community) have done a great job, but really need to work on organization of repos, removing items that prevent getting started quickly (vault partially setup, multiple copies of the same examples with subtle differences that make a huge difference to getting started, knowing which version of their example is the latest)
 
 EVPN vs VxLAN with manual flooding:
  - For my personal needs.  EVPN does not necessarily need to be deployed with VxLAN.
