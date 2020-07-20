@@ -6,7 +6,7 @@ A more simplified & commented version of [arista-evpn-webinar-june-11](https://g
 ## Initial Thoughts to the Arista Approach
 
 Overall Thoughts:
- - I like the approach and especially the `eos_config_deploy_eapi` role.  It should have full EOS syntax coverage for all recent OS 4.22+ & it is supported as P3/4 by Arista.
+ - I like the approach and especially the `eos_cli_config_gen` role.  It should have full EOS syntax coverage for all recent OS 4.22+ & it is supported as P3/4 by Arista.
  - [aristanetworks](https://github.com/aristanetworks) & [arista-netdevops-community](https://github.com/arista-netdevops-community) have done a great job, but really need to work on organization of repos, removing items that prevent getting started quickly (vault partially setup, multiple copies of the same examples with subtle differences that make a huge difference to getting started, knowing which version of their example is the latest)
 
 EVPN vs VxLAN with manual flooding:
@@ -24,7 +24,7 @@ Structure & Role Generated Files:
  - Documentation output is a nice touch that [carlbuchmann](https://github.com/carlbuchmann) started before he joined Arista.  Since I first saw his early Ansible example repos, I have also focused to do the same in my own approach.
  - Structured config files make total sense, & they feel like they should belong as host_vars for each device.
  - I assume the reason structured config files are not maintained in the host_vars folders is probably so you can alter your host_vars as needed to track the generation of new structured config. 
- - Another approach to keep the above intention of separating abstraction/topology/function generated intended config from the host & group vars it used to generate intended configs would be to separate & move the "generate device intended config and documentation" task of the play and its associated directory structure to a separate directory/repo and its own playbook.  Basically you could drop avd-evpn-l3ls generated structured configs into the host_vars of the "device_config-deploy" repo's host_vars and also update/overwrite a `hosts/<fabric-name>.yml` for any fabric abstractions that were generated. (I likely need to articulate this better, and this is not supported given the expected directory structure in the eos_config_deploy_eapi role).
+ - Another approach to keep the above intention of separating abstraction/topology/function generated intended config from the host & group vars it used to generate intended configs would be to separate & move the "generate device intended config and documentation" task of the play and its associated directory structure to a separate directory/repo and its own playbook.  Basically you could drop avd-evpn-l3ls generated structured configs into the host_vars of the "device_config-deploy" repo's host_vars and also update/overwrite a `hosts/<fabric-name>.yml` for any fabric abstractions that were generated. (I likely need to articulate this better, and this is not supported given the expected directory structure in the eos_cli_config_gen role).
 
 Next Steps:
  - Layer in batfish validation
